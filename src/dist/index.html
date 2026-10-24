@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinySAST</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="app.js"></script>
+</head>
+
+<!-- accent color #77de3d -->
+
+<body class="bg-gray-950 min-h-screen flex flex-col text-white">
+    <div class="flex-grow pb-10">
+        <div class="flex flex-col items-center text-center mt-8">
+            <h1 class="text-3xl font-bold">TinySAST</h1>
+            <h2 class="text-xl font-semibold">A simple vulnerability static analysis tool</h2>
+        </div>
+
+        <!-- file upload field -->
+        <div class="file-upload flex flex-row items-stretch justify-center gap-3 w-full max-w-md mx-auto mt-6">
+            <label for="fileInput" id="dropZone"
+                class="flex flex-col items-center justify-center flex-1 h-12 px-4 transition-colors duration-200 border-2 border-dashed border-gray-700 rounded-lg cursor-pointer bg-gray-900 hover:border-[#77de3d] hover:bg-gray-800/60 focus-within:border-[#77de3d] overflow-hidden">
+                <!-- default prompt shown when no file is selected -->
+                <div id="dropPrompt" class="flex items-center justify-center text-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#77de3d] shrink-0" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 12v9m0-9l-3 3m3-3l3 3" />
+                    </svg>
+                    <span class="text-sm text-gray-300 whitespace-nowrap">Click to upload or drag and drop</span>
+                </div>
+
+                <!-- selected file info, hidden until a file is chosen -->
+                <div id="fileInfo" class="hidden flex items-center justify-center text-center w-full gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#77de3d] shrink-0" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span id="fileName" class="text-sm font-semibold text-gray-100 truncate max-w-[14rem]"></span>
+                    <span id="fileSize" class="text-xs text-gray-400 shrink-0"></span>
+                    <button id="clearFile" type="button"
+                        class="text-xs text-gray-400 underline hover:text-[#77de3d] shrink-0">
+                        Remove
+                    </button>
+                </div>
+
+                <input type="file" id="fileInput" name="fileInput" class="sr-only">
+            </label>
+            <!-- button to trigger analysis -->
+            <button id="analyzeButton"
+                class="h-12 px-5 shrink-0 bg-[#77de3d] text-gray-900 font-semibold rounded hover:bg-[#5cb32e] transition-colors duration-200">
+                Analyze
+            </button>
+        </div>
+
+        <!-- analysis results: source code (left) + security issues (right) -->
+        <div id="resultsPanel" class="hidden w-full max-w-6xl mx-auto mt-10 px-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <h3 class="text-lg font-semibold">Analysis Results</h3>
+                <div class="flex items-center gap-2">
+                    <span id="verdictBadge" class="hidden"></span>
+                    <span id="severityBadge" class="hidden"></span>
+                    <span id="issueCount" class="text-xs font-mono text-gray-400"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-[7fr_3fr] gap-4 h-[70vh] min-h-[320px]">
+                <!-- source code viewer (scrollable) -->
+                <div class="flex flex-col min-h-0 rounded-lg border border-gray-800 bg-gray-900 overflow-hidden">
+                    <div
+                        class="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-800">
+                        Source Code
+                    </div>
+                    <div id="codeContainer" class="flex-1 min-h-0 overflow-auto py-2 bg-gray-950"></div>
+                </div>
+
+                <!-- security issues list (scrollable) -->
+                <div class="flex flex-col min-h-0 rounded-lg border border-gray-800 bg-gray-900 overflow-hidden">
+                    <div
+                        class="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-800">
+                        Security Issues
+                    </div>
+                    <div id="issuesContainer" class="flex-1 min-h-0 overflow-auto flex flex-col gap-2 p-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-2 mt-auto">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2026 TinySAST. Available under MIT License.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

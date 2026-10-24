@@ -1,0 +1,10 @@
+services:
+  ai-sec-scanner:
+    build: .
+    image: ai-sec-scanner
+    container_name: ai_sec_scanner_container
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: unless-stopped
